@@ -1,0 +1,51 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract VotingC {
+    mapping(address => bool) public voters;
+    mapping(string => uint256) public c;
+    string[] public cn;
+    uint256 public totalVotes;
+
+    constructor(string[] memory candN) {
+        cn = candN;
+    }
+
+    function vote(string memory caNm) public {
+        require(!voters[msg.sender], "Already voted");
+        bool exists = false;
+        for (uint256 i = 0; i < cn.length; i++) {
+            if (keccak256(bytes(caNm)) == keccak256(bytes(cn[i]))) {
+                exists = true;
+                break;
+            }
+        }
+        require(exists, "Candidate does not exist");
+        c[caNm]++;
+        voters[msg.sender] = true;
+        totalVotes++; // Increment total votes
+    }
+
+    function getVoterCount(string memory canM) public view returns (uint256) {
+        return c[canM];
+    }
+
+    function getVotePercentage(string memory canM)
+        public
+        view
+        returns (uint256)
+    {
+        require(totalVotes > 0, "No votes cast");
+        return (c[canM] * 100) / totalVotes; // Calculate percentage
+    }
+
+    function getWinner() public view returns (string memory winnerCandidate) {
+        uint256 highestVotes = 0;
+        for (uint256 i = 0; i < cn.length; i++) {
+            if (c[cn[i]] > highestVotes) {
+                highestVotes = c[cn[i]];
+                winnerCandidate = cn[i];
+            }
+        }
+    }
+}
