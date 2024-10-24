@@ -1,0 +1,75 @@
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract employee {
+    string n;
+    uint256 mid;
+    uint256 sal;
+
+    function setE(
+        string memory a,
+        uint256 b,
+        uint256 c
+    ) public {
+        n = a;
+        mid = b;
+        sal = c;
+    }
+}
+
+contract department {
+    string dep;
+
+    function setD(string memory a) public {
+        dep = a;
+    }
+}
+
+contract salary is employee, department {
+    uint256 HRA;
+
+    function calHRA() public returns (uint256) {
+        if (sal >= 15000) {
+            HRA = 5000;
+        } else if (sal >= 25000) {
+            HRA = 10000;
+        } else {
+            HRA = 2000;
+        }
+        return HRA;
+    }
+
+    function getVal()
+        public
+        view
+        returns (
+            string memory,
+            uint256,
+            uint256,
+            string memory,
+            uint256
+        )
+    {
+        return (n, mid, sal, dep, HRA);
+    }
+}
+
+contract test {
+    salary s = new salary();
+
+    function tInherit()
+        public
+        returns (
+            string memory,
+            uint256,
+            uint256,
+            string memory,
+            uint256
+        )
+    {
+        s.setE("Tisha Shah", 101, 20000);
+        s.setD("CS");
+        s.calHRA();
+        return s.getVal();
+    }
+}
