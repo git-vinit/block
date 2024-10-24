@@ -1,0 +1,30 @@
+// SPDX-License-Identifier:MIT
+pragma solidity ^0.8.0;
+
+contract BankC {
+    address public s;
+    uint256 public bal;
+
+    constructor() {
+        s = msg.sender;
+        bal = 0;
+    }
+
+    function deposit(uint256 a) public {
+        bal = bal + a;
+        s = msg.sender;
+    }
+
+    function withdraw(uint256 a) public {
+        if (bal > a) bal = bal - a;
+        s = msg.sender;
+    }
+
+    function diapBal() public view returns (uint256) {
+        return bal;
+    }
+
+    function dispO() public view returns (address) {
+        return s;
+    }
+}
