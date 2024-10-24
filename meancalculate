@@ -1,0 +1,21 @@
+// SPDX-License-Identifier:MIT
+pragma solidity ^0.8.0;
+
+contract MeanCalculator {
+    function calculateMean(uint256[] memory numbers)
+        public
+        pure
+        returns (uint256)
+    {
+        require(
+            numbers.length > 0,
+            "The array must contain at least onenumber."
+        );
+        uint256 sum = 0;
+        for (uint256 i = 0; i < numbers.length; i++) {
+            sum += numbers[i];
+        }
+        uint256 mean = sum / numbers.length;
+        return mean;
+    }
+}
