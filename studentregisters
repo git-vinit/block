@@ -1,0 +1,46 @@
+// SPDX-License-Identifier:MIT
+
+pragma solidity ^0.8.0;
+
+contract studentC {
+    struct std {
+        uint256 sid;
+        string sname;
+        address add;
+        uint256[5] marks;
+        uint256 percentage;
+        string grade;
+    }
+    mapping(uint256 => std) public s1;
+
+    function registerS(uint256 i, string memory n) public {
+        s1[i].sname = n;
+        s1[i].add = msg.sender;
+        s1[i].sid = i;
+    }
+
+    function addMarks(uint256 id, uint256[5] memory marks) public {
+        require(s1[id].sid != 0, "Student not found");
+        s1[id].marks = marks;
+        uint256 totalMarks = 0;
+        for (uint256 j = 0; j < marks.length; j++) {
+            totalMarks += marks[j];
+        }
+        s1[id].percentage = totalMarks / marks.length;
+        if (s1[id].percentage >= 90) {
+            s1[id].grade = "A+";
+        } else if (s1[id].percentage >= 75) {
+            s1[id].grade = "A";
+        } else if (s1[id].percentage >= 60) {
+            s1[id].grade = "B";
+        } else if (s1[id].percentage >= 50) {
+            s1[id].grade = "C";
+        } else {
+            s1[id].grade = "Fail";
+        }
+    }
+
+    function display(uint256 id) external view returns (std memory) {
+        return s1[id];
+    }
+}
